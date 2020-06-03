@@ -17,12 +17,12 @@
         </GroupBox>
         <Button Content="Add world" Margin="10,0,0,10" HorizontalAlignment="Left" Width="100" Height="20" VerticalAlignment="Bottom" Click="AddWorldButton"/>
         <Button Content="Remove world" Margin="0,0,0,10" HorizontalAlignment="Right" Width="100" Height="20" VerticalAlignment="Bottom" Click="RemoveWorldButton"/>
-        <GroupBox Grid.Column="1" Header="Regions" Margin="10,10,10,35">
+        <GroupBox Grid.Column="1" Header="Regions" Margin="10,10,0,35">
             <DataGrid x:Name="regionList"/>
         </GroupBox>
         <Button Grid.Column="1" Content="Add regions" Margin="10,0,0,10" HorizontalAlignment="Left" Width="100" Height="20" VerticalAlignment="Bottom"
                 Click="AddRegionsButton"/>
-        <Button Grid.Column="1" Content="Remove regions" Margin="0,0,10,10" HorizontalAlignment="Right" Width="100" Height="20" VerticalAlignment="Bottom"
+        <Button Grid.Column="1" Content="Remove regions" Margin="0,0,0,10" HorizontalAlignment="Right" Width="100" Height="20" VerticalAlignment="Bottom"
                 Click="RemoveRegionsButton"/>
     </Grid>
 </Window>
