@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
@@ -9,12 +8,27 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace MinecraftChunkBackup {
     public partial class MainWindow : Window {
+        const string worldsFile = "worlds.txt", regionsFile = "regions.txt";
+
         readonly ObservableCollection<World> worlds = new ObservableCollection<World>();
         readonly ObservableCollection<RegionEntry> regions = new ObservableCollection<RegionEntry>();
 
         public MainWindow() {
             InitializeComponent();
+            if (File.Exists(worldsFile)) {
+                string[] contents = File.ReadAllLines(worldsFile);
+                for (int i = 0; i < contents.Length; ++i)
+                    if (Directory.Exists(contents[i]))
+                        worlds.Add(new World(contents[i]));
+            }
+            if (File.Exists(regionsFile)) {
+                string[] contents = File.ReadAllLines(regionsFile);
+                for (int i = 0; i < contents.Length; ++i)
+                    regions.Add(new RegionEntry(new Region(contents[i], worlds)));
+            }
             worldList.ItemsSource = worlds;
+            if (worlds.Count != 0)
+                worldList.SelectedItem = worlds[worlds.Count - 1];
             regionList.ItemsSource = regions;
         }
 
@@ -95,6 +109,17 @@ namespace MinecraftChunkBackup {
         void RemoveRegionsButton(object sender, RoutedEventArgs e) {
             while (regionList.SelectedItems.Count != 0)
                 regions.Remove((RegionEntry)regionList.SelectedItems[0]);
+        }
+
+        void Window_Closed(object sender, EventArgs e) {
+            string[] contents = new string[worlds.Count];
+            for (int i = 0, end = worlds.Count; i < end; ++i)
+                contents[i] = worlds[i].Path;
+            File.WriteAllLines(worldsFile, contents);
+            contents = new string[regions.Count];
+            for (int i = 0, end = regions.Count; i < end; ++i)
+                contents[i] = string.Format("{0}:{1}", regions[i].World, regions[i].Region.Pos);
+            File.WriteAllLines(regionsFile, contents);
         }
     }
 }

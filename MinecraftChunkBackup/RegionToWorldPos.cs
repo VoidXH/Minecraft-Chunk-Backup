@@ -2,10 +2,7 @@
     public class RegionToWorldPos {
         readonly string conversion;
 
-        public RegionToWorldPos(Region region) {
-            Position start = region.WorldPosStart, end = region.WorldPosEnd;
-            conversion = string.Format("{0};{1} - {2};{3}", start.X, start.Z, end.X, end.Z);
-        }
+        public RegionToWorldPos(Region region) => conversion = string.Format("{0} - {1}", region.WorldPosStart, region.WorldPosEnd);
 
         public override string ToString() => conversion;
     }

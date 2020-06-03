@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MinecraftChunkBackup"
         mc:Ignorable="d"
-        Title="Minecraft Chunk Backup" Height="450" Width="800">
+        Title="Minecraft Chunk Backup" Height="450" Width="800" Closed="Window_Closed">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="220" Width=".3*"/>
@@ -24,5 +24,12 @@
                 Click="AddRegionsButton"/>
         <Button Grid.Column="1" Content="Remove regions" Margin="0,0,0,10" HorizontalAlignment="Right" Width="100" Height="20" VerticalAlignment="Bottom"
                 Click="RemoveRegionsButton"/>
+        <Label Content="Back up every" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <local:NumericTextBox x:Name="hours" Grid.Column="2" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="23"
+                              Margin="10,42,0,0" Text="1" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="25"/>
+        <Label Content="hour(s) and" Grid.Column="2" HorizontalAlignment="Left" Margin="35,41,0,0" VerticalAlignment="Top"/>
+        <local:NumericTextBox x:Name="minutes" Grid.Column="2" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="23"
+                              Margin="10,72,0,0" Text="0" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="25"/>
+        <Label Content="minute(s)." Grid.Column="2" HorizontalAlignment="Left" Margin="35,71,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
