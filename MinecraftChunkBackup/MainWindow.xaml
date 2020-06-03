@@ -12,8 +12,10 @@
             <ColumnDefinition Width=".7*"/>
             <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
-        <GroupBox Header="Worlds" Margin="10,10,10,35"/>
-        <Button Content="Add world" Margin="0,0,10,10" HorizontalAlignment="Right" Width="100" Height="20" VerticalAlignment="Bottom" Click="AddWorldButton"/>
+        <GroupBox Header="Worlds" Margin="10,10,0,35">
+            <ListView x:Name="worldList"/>
+        </GroupBox>
+        <Button Content="Add world" Margin="10,0,0,10" HorizontalAlignment="Left" Width="100" Height="20" VerticalAlignment="Bottom" Click="AddWorldButton"/>
         <GroupBox Grid.Column="1" Header="Regions" Margin="10,10,10,35">
             <DataGrid x:Name="regionList"/>
         </GroupBox>

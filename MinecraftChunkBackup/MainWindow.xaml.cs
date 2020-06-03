@@ -1,17 +1,39 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
+using System.Windows.Forms;
+
+using MessageBox = System.Windows.MessageBox;
 
 namespace MinecraftChunkBackup {
     public partial class MainWindow : Window {
+        readonly ObservableCollection<World> worlds = new ObservableCollection<World>();
         readonly ObservableCollection<RegionEntry> regions = new ObservableCollection<RegionEntry>();
 
         public MainWindow() {
             InitializeComponent();
+            worldList.ItemsSource = worlds;
             regionList.ItemsSource = regions;
         }
 
+        /// <summary>Browse the PC for a Minecraft world.</summary>
         void AddWorldButton(object sender, RoutedEventArgs e) {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), mcPath = Path.Combine(path, ".minecraft", "saves");
+            if (Directory.Exists(mcPath))
+                path = mcPath;
+            FolderBrowserDialog opener = new FolderBrowserDialog {
+                SelectedPath = path
+            };
+            if (opener.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                string levelPath = Path.Combine(opener.SelectedPath, "level.dat"), regionPath = Path.Combine(opener.SelectedPath, "region");
+                if (!File.Exists(levelPath) || !Directory.Exists(regionPath)) {
+                    MessageBox.Show("The selected folder is not the root of a Minecraft world.", "Invalid folder",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                worlds.Add(new World(opener.SelectedPath));
+            }
         }
 
         /// <summary>Checks if a position is already in the list of regions.</summary>
