@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
@@ -32,8 +33,17 @@ namespace MinecraftChunkBackup {
                         MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                worlds.Add(new World(opener.SelectedPath));
+                World world = new World(opener.SelectedPath);
+                worlds.Add(world);
+                worldList.SelectedItem = world;
             }
+        }
+
+        /// <summary>Removes the selected world and all its backed up regions.</summary>
+        void RemoveWorldButton(object sender, RoutedEventArgs e) {
+            IList selected = worldList.SelectedItems;
+            for (int i = 0, end = selected.Count; i < end; ++i)
+                worlds.Remove((World)selected[i]);
         }
 
         /// <summary>Checks if a position is already in the list of regions.</summary>
@@ -51,7 +61,7 @@ namespace MinecraftChunkBackup {
         }
 
         /// <summary>Adds a region and keeps <see cref="regions"/> sorted.</summary>
-        void AddSortedRegion(int x, int z) {
+        void AddSortedRegion(World world, int x, int z) {
             int pos = 0, end = regions.Count;
             for (; pos < end; ++pos) {
                 Position coords = regions[pos].Region.Pos;
@@ -60,21 +70,26 @@ namespace MinecraftChunkBackup {
                 if (coords.X > x || coords.Z > z)
                     break;
             }
-            regions.Add(new RegionEntry(new Region(x, z)));
+            regions.Add(new RegionEntry(new Region(world, x, z)));
             if (pos != end)
                 regions.Move(end, pos);
         }
 
         /// <summary>Show an <see cref="AddRegions"/> dialog and add the results that are not already on the <see cref="regions"/> list.</summary>
         void AddRegionsButton(object sender, RoutedEventArgs e) {
-            AddRegions adder = new AddRegions();
+            if (worldList.SelectedItems.Count != 1) {
+                MessageBox.Show("Please select one world.", "World selection", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            World world = (World)worldList.SelectedItems[0];
+            AddRegions adder = new AddRegions(world);
             if (adder.ShowDialog().Value)
                 for (int x = adder.regionStartX.Value, xEnd = adder.regionEndX.Value, xDir = Math.Sign(xEnd - x + .01);
                     x != xEnd + xDir; x += xDir)
                     for (int z = adder.regionStartZ.Value, zEnd = adder.regionEndZ.Value, zDir = Math.Sign(zEnd - z + .01);
                         z != zEnd + zDir; z += zDir)
                         if (!HasRegion(x, z))
-                            AddSortedRegion(x, z);
+                            AddSortedRegion(world, x, z);
         }
     }
 }

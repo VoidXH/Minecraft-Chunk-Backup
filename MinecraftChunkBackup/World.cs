@@ -4,7 +4,7 @@
         public string Path { get; }
 
         public World(string path) {
-            Name = System.IO.Path.GetDirectoryName(path);
+            Name = System.IO.Path.GetFileName(path);
             Path = path;
         }
 

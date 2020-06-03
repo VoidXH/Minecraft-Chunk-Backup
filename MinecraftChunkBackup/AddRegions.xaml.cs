@@ -3,7 +3,11 @@ using System.Windows.Controls;
 
 namespace MinecraftChunkBackup {
     public partial class AddRegions : Window {
-        public AddRegions() => InitializeComponent();
+        public World World { get; }
+        public AddRegions(World world) {
+            World = world;
+            InitializeComponent();
+        }
 
         bool Valid => regionStartX.Valid && regionStartZ.Valid && regionEndX.Valid && regionEndZ.Valid &&
             chunkStartX.Valid && chunkStartZ.Valid && chunkEndX.Valid && chunkEndZ.Valid &&
@@ -53,19 +57,19 @@ namespace MinecraftChunkBackup {
         void SetRegion(object sender, RoutedEventArgs e) {
             if (!Valid)
                 return;
-            Reset(new Region(regionStartX.Value, regionStartZ.Value), new Region(regionEndX.Value, regionEndZ.Value));
+            Reset(new Region(World, regionStartX.Value, regionStartZ.Value), new Region(World, regionEndX.Value, regionEndZ.Value));
         }
 
         void SetChunk(object sender, RoutedEventArgs e) {
             if (!Valid)
                 return;
-            Reset(Region.FromChunk(chunkStartX.Value, chunkStartZ.Value), Region.FromChunk(chunkEndX.Value, chunkEndZ.Value));
+            Reset(Region.FromChunk(World, chunkStartX.Value, chunkStartZ.Value), Region.FromChunk(World, chunkEndX.Value, chunkEndZ.Value));
         }
 
         void SetWorldPos(object sender, RoutedEventArgs e) {
             if (!Valid)
                 return;
-            Reset(Region.FromWorldPos(worldStartX.Value, worldStartZ.Value), Region.FromWorldPos(worldEndX.Value, worldEndZ.Value));
+            Reset(Region.FromWorldPos(World, worldStartX.Value, worldStartZ.Value), Region.FromWorldPos(World, worldEndX.Value, worldEndZ.Value));
         }
 
         void OKButton(object sender, RoutedEventArgs e) {
