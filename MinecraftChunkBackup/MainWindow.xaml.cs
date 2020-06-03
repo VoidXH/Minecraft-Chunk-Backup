@@ -41,9 +41,8 @@ namespace MinecraftChunkBackup {
 
         /// <summary>Removes the selected world and all its backed up regions.</summary>
         void RemoveWorldButton(object sender, RoutedEventArgs e) {
-            IList selected = worldList.SelectedItems;
-            for (int i = 0, end = selected.Count; i < end; ++i)
-                worlds.Remove((World)selected[i]);
+            while (worldList.SelectedItems.Count != 0)
+                worlds.Remove((World)worldList.SelectedItems[0]);
         }
 
         /// <summary>Checks if a position is already in the list of regions.</summary>
@@ -90,6 +89,12 @@ namespace MinecraftChunkBackup {
                         z != zEnd + zDir; z += zDir)
                         if (!HasRegion(x, z))
                             AddSortedRegion(world, x, z);
+        }
+
+        /// <summary>Removes the selected <see cref="regions"/>.</summary>
+        void RemoveRegionsButton(object sender, RoutedEventArgs e) {
+            while (regionList.SelectedItems.Count != 0)
+                regions.Remove((RegionEntry)regionList.SelectedItems[0]);
         }
     }
 }
