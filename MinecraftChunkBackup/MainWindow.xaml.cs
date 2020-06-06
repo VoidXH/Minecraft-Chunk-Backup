@@ -21,10 +21,16 @@ namespace MinecraftChunkBackup {
                     if (Directory.Exists(contents[i]))
                         worlds.Add(new World(contents[i]));
             }
-            if (File.Exists(regionsFile))
-                using (BinaryReader reader = new BinaryReader(new FileStream(regionsFile, FileMode.Open)))
+            if (File.Exists(regionsFile)) {
+                using (BinaryReader reader = new BinaryReader(new FileStream(regionsFile, FileMode.Open))) {
+                    for (int i = 0, end = reader.ReadInt32(); i < end; ++i)
+                        worlds.Add(new World(reader.ReadString()));
                     for (int i = 0, end = reader.ReadInt32(); i < end; ++i)
                         regions.Add(new RegionEntry(new Region(reader, worlds)));
+                    hours.Value = reader.ReadInt32();
+                    minutes.Value = reader.ReadInt32();
+                }
+            }
             worldList.ItemsSource = worlds;
             if (worlds.Count != 0)
                 worldList.SelectedItem = worlds[worlds.Count - 1];
@@ -111,14 +117,15 @@ namespace MinecraftChunkBackup {
         }
 
         void Window_Closed(object sender, EventArgs e) {
-            string[] contents = new string[worlds.Count];
-            for (int i = 0, end = worlds.Count; i < end; ++i)
-                contents[i] = worlds[i].Path;
-            File.WriteAllLines(worldsFile, contents);
-            using (BinaryWriter regionWriter = new BinaryWriter(new FileStream(regionsFile, FileMode.Create))) {
-                regionWriter.Write(regions.Count);
+            using (BinaryWriter writer = new BinaryWriter(new FileStream(regionsFile, FileMode.Create))) {
+                writer.Write(worlds.Count);
+                for (int i = 0, end = worlds.Count; i < end; ++i)
+                    writer.Write(worlds[i].Path);
+                writer.Write(regions.Count);
                 for (int i = 0, end = regions.Count; i < end; ++i)
-                    regions[i].Region.Serialize(regionWriter);
+                    regions[i].Region.Serialize(writer);
+                writer.Write(hours.Value);
+                writer.Write(minutes.Value);
             }
         }
     }
