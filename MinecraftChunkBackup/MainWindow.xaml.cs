@@ -8,7 +8,7 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace MinecraftChunkBackup {
     public partial class MainWindow : Window {
-        const string worldsFile = "worlds.txt", regionsFile = "regions.txt";
+        const string worldsFile = "worlds.txt", regionsFile = "regions.bin";
 
         readonly ObservableCollection<World> worlds = new ObservableCollection<World>();
         readonly ObservableCollection<RegionEntry> regions = new ObservableCollection<RegionEntry>();
@@ -21,11 +21,10 @@ namespace MinecraftChunkBackup {
                     if (Directory.Exists(contents[i]))
                         worlds.Add(new World(contents[i]));
             }
-            if (File.Exists(regionsFile)) {
-                string[] contents = File.ReadAllLines(regionsFile);
-                for (int i = 0; i < contents.Length; ++i)
-                    regions.Add(new RegionEntry(new Region(contents[i], worlds)));
-            }
+            if (File.Exists(regionsFile))
+                using (BinaryReader reader = new BinaryReader(new FileStream(regionsFile, FileMode.Open)))
+                    for (int i = 0, end = reader.ReadInt32(); i < end; ++i)
+                        regions.Add(new RegionEntry(new Region(reader, worlds)));
             worldList.ItemsSource = worlds;
             if (worlds.Count != 0)
                 worldList.SelectedItem = worlds[worlds.Count - 1];
@@ -116,10 +115,11 @@ namespace MinecraftChunkBackup {
             for (int i = 0, end = worlds.Count; i < end; ++i)
                 contents[i] = worlds[i].Path;
             File.WriteAllLines(worldsFile, contents);
-            contents = new string[regions.Count];
-            for (int i = 0, end = regions.Count; i < end; ++i)
-                contents[i] = string.Format("{0}:{1}", regions[i].World, regions[i].Region.Pos);
-            File.WriteAllLines(regionsFile, contents);
+            using (BinaryWriter regionWriter = new BinaryWriter(new FileStream(regionsFile, FileMode.Create))) {
+                regionWriter.Write(regions.Count);
+                for (int i = 0, end = regions.Count; i < end; ++i)
+                    regions[i].Region.Serialize(regionWriter);
+            }
         }
     }
 }

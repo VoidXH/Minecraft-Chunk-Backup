@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
 
 namespace MinecraftChunkBackup {
     public class Region {
@@ -27,21 +29,35 @@ namespace MinecraftChunkBackup {
             Pos = new Position(x, z);
         }
 
-        public Region(string serialization, Collection<World> worlds) {
-            int split = serialization.IndexOf(':');
-            string world = serialization.Substring(0, split);
+        static World GetWorld(string name, Collection<World> worlds) {
             for (int i = 0, end = worlds.Count; i < end; ++i) {
-                if (worlds[i].Name.Equals(world)) {
-                    World = worlds[i];
-                    break;
+                if (worlds[i].Name.Equals(name)) {
+                    return worlds[i];
                 }
             }
+            return null;
+        }
+
+        public Region(string serialization, Collection<World> worlds) {
+            int split = serialization.IndexOf(':');
+            World = GetWorld(serialization.Substring(0, split), worlds);
             Pos = new Position(serialization.Substring(split + 1));
+        }
+
+        public Region(BinaryReader reader, Collection<World> worlds) {
+            World = GetWorld(reader.ReadString(), worlds);
+            Pos = new Position(reader.ReadInt32(), reader.ReadInt32());
         }
 
         public static Region FromChunk(World world, int x, int z) => new Region(world, x >> 5, z >> 5);
 
         public static Region FromWorldPos(World world, int x, int z) => new Region(world, x >> 9, z >> 9);
+
+        public void Serialize(BinaryWriter writer) {
+            writer.Write(World.Name);
+            writer.Write(Pos.X);
+            writer.Write(Pos.Z);
+        }
 
         public override string ToString() => string.Format("r.{0}.{1}.mca", Pos.X, Pos.Z);
     }
