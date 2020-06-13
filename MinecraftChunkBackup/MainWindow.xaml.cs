@@ -8,19 +8,13 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace MinecraftChunkBackup {
     public partial class MainWindow : Window {
-        const string worldsFile = "worlds.txt", regionsFile = "regions.bin";
+        const string regionsFile = "regions.bin";
 
         readonly ObservableCollection<World> worlds = new ObservableCollection<World>();
         readonly ObservableCollection<RegionEntry> regions = new ObservableCollection<RegionEntry>();
 
         public MainWindow() {
             InitializeComponent();
-            if (File.Exists(worldsFile)) {
-                string[] contents = File.ReadAllLines(worldsFile);
-                for (int i = 0; i < contents.Length; ++i)
-                    if (Directory.Exists(contents[i]))
-                        worlds.Add(new World(contents[i]));
-            }
             if (File.Exists(regionsFile)) {
                 using (BinaryReader reader = new BinaryReader(new FileStream(regionsFile, FileMode.Open))) {
                     for (int i = 0, end = reader.ReadInt32(); i < end; ++i)
@@ -118,6 +112,7 @@ namespace MinecraftChunkBackup {
 
         void Window_Closed(object sender, EventArgs e) {
             using (BinaryWriter writer = new BinaryWriter(new FileStream(regionsFile, FileMode.Create))) {
+                World.AssignIDs(worlds);
                 writer.Write(worlds.Count);
                 for (int i = 0, end = worlds.Count; i < end; ++i)
                     writer.Write(worlds[i].Path);

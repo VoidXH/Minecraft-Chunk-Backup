@@ -29,23 +29,8 @@ namespace MinecraftChunkBackup {
             Pos = new Position(x, z);
         }
 
-        static World GetWorld(string name, Collection<World> worlds) {
-            for (int i = 0, end = worlds.Count; i < end; ++i) {
-                if (worlds[i].Name.Equals(name)) {
-                    return worlds[i];
-                }
-            }
-            return null;
-        }
-
-        public Region(string serialization, Collection<World> worlds) {
-            int split = serialization.IndexOf(':');
-            World = GetWorld(serialization.Substring(0, split), worlds);
-            Pos = new Position(serialization.Substring(split + 1));
-        }
-
         public Region(BinaryReader reader, Collection<World> worlds) {
-            World = GetWorld(reader.ReadString(), worlds);
+            World = worlds[reader.ReadInt32()];
             Pos = new Position(reader.ReadInt32(), reader.ReadInt32());
         }
 
@@ -54,7 +39,7 @@ namespace MinecraftChunkBackup {
         public static Region FromWorldPos(World world, int x, int z) => new Region(world, x >> 9, z >> 9);
 
         public void Serialize(BinaryWriter writer) {
-            writer.Write(World.Name);
+            writer.Write(World.ID);
             writer.Write(Pos.X);
             writer.Write(Pos.Z);
         }
