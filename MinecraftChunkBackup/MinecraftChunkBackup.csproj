@@ -60,6 +60,7 @@
     <Compile Include="AddRegions.xaml.cs">
       <DependentUpon>AddRegions.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackupTask.cs" />
     <Compile Include="NumericTextBox.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Region.cs" />

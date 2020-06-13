@@ -10,6 +10,7 @@ namespace MinecraftChunkBackup {
     public partial class MainWindow : Window {
         const string regionsFile = "regions.bin";
 
+        readonly BackupTask backup;
         readonly ObservableCollection<World> worlds = new ObservableCollection<World>();
         readonly ObservableCollection<RegionEntry> regions = new ObservableCollection<RegionEntry>();
 
@@ -29,6 +30,7 @@ namespace MinecraftChunkBackup {
             if (worlds.Count != 0)
                 worldList.SelectedItem = worlds[worlds.Count - 1];
             regionList.ItemsSource = regions;
+            backup = new BackupTask(regions);
         }
 
         /// <summary>Browse the PC for a Minecraft world.</summary>
@@ -111,6 +113,7 @@ namespace MinecraftChunkBackup {
         }
 
         void Window_Closed(object sender, EventArgs e) {
+            backup.Dispose();
             using (BinaryWriter writer = new BinaryWriter(new FileStream(regionsFile, FileMode.Create))) {
                 World.AssignIDs(worlds);
                 writer.Write(worlds.Count);
