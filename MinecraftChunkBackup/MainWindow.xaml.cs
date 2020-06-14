@@ -24,6 +24,11 @@ namespace MinecraftChunkBackup {
                         regions.Add(new RegionEntry(new Region(reader, worlds)));
                     hours.Value = reader.ReadInt32();
                     minutes.Value = reader.ReadInt32();
+                    string path = reader.ReadString();
+                    if (string.IsNullOrEmpty(path))
+                        picker.SelectedPath = null;
+                    else
+                        picker.SelectedPath = path;
                 }
             }
             worldList.ItemsSource = worlds;
@@ -124,6 +129,10 @@ namespace MinecraftChunkBackup {
                     regions[i].Region.Serialize(writer);
                 writer.Write(hours.Value);
                 writer.Write(minutes.Value);
+                if (picker.SelectedPath != null)
+                    writer.Write(picker.SelectedPath);
+                else
+                    writer.Write(string.Empty);
             }
         }
     }

@@ -3,14 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MinecraftChunkBackup"
+        xmlns:local="clr-namespace:Controls"
         mc:Ignorable="d"
         Title="Minecraft Chunk Backup" Height="450" Width="800" Closed="Window_Closed">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="220" Width=".3*"/>
             <ColumnDefinition Width=".7*"/>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="220"/>
         </Grid.ColumnDefinitions>
         <GroupBox Header="Worlds" Margin="10,10,0,35">
             <ListView x:Name="worldList"/>
@@ -24,12 +24,14 @@
                 Click="AddRegionsButton"/>
         <Button Grid.Column="1" Content="Remove regions" Margin="0,0,0,10" HorizontalAlignment="Right" Width="100" Height="20" VerticalAlignment="Bottom"
                 Click="RemoveRegionsButton"/>
-        <Label Content="Back up every" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="Back up every" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Padding="0,5,5,5"/>
         <local:NumericTextBox x:Name="hours" Grid.Column="2" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="23"
-                              Margin="10,42,0,0" Text="1" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="25"/>
-        <Label Content="hour(s) and" Grid.Column="2" HorizontalAlignment="Left" Margin="35,41,0,0" VerticalAlignment="Top"/>
+                              Margin="10,37,0,0" Text="1" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="25"/>
+        <Label Content="hour(s) and" Grid.Column="2" HorizontalAlignment="Left" Margin="35,36,0,0" VerticalAlignment="Top"/>
         <local:NumericTextBox x:Name="minutes" Grid.Column="2" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="23"
-                              Margin="10,72,0,0" Text="0" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="25"/>
-        <Label Content="minute(s)." Grid.Column="2" HorizontalAlignment="Left" Margin="35,71,0,0" VerticalAlignment="Top"/>
+                              Margin="105,37,0,0" Text="0" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="25"/>
+        <Label Content="minute(s)." Grid.Column="2" HorizontalAlignment="Left" Margin="130,36,0,0" VerticalAlignment="Top"/>
+        <Label Content="Export path:" Grid.Column="2" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Padding="0,5,5,5"/>
+        <local:FolderPicker x:Name="picker" Grid.Column="2" HorizontalAlignment="Left" Height="22" Margin="10,91,0,0" VerticalAlignment="Top" Width="200"/>
     </Grid>
 </Window>

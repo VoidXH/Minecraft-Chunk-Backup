@@ -61,7 +61,8 @@
       <DependentUpon>AddRegions.xaml</DependentUpon>
     </Compile>
     <Compile Include="BackupTask.cs" />
-    <Compile Include="NumericTextBox.cs" />
+    <Compile Include="Controls\FolderPicker.cs" />
+    <Compile Include="Controls\NumericTextBox.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Region.cs" />
     <Compile Include="RegionEntry.cs" />
@@ -111,5 +112,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

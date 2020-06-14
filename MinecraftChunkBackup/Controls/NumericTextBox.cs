@@ -4,7 +4,7 @@ using System.Windows.Media;
 using Brush = System.Windows.Media.Brush;
 using Color = System.Windows.Media.Color;
 
-namespace MinecraftChunkBackup {
+namespace Controls {
     public class NumericTextBox : TextBox {
         public Brush InvalidBackground { get; set; } = new SolidColorBrush(Color.FromRgb(255, 0, 0));
 
