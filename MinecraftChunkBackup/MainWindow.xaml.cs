@@ -35,7 +35,7 @@ namespace MinecraftChunkBackup {
             if (worlds.Count != 0)
                 worldList.SelectedItem = worlds[worlds.Count - 1];
             regionList.ItemsSource = regions;
-            backup = new BackupTask(regions);
+            backup = new BackupTask(regions, picker, hours, minutes);
         }
 
         /// <summary>Browse the PC for a Minecraft world.</summary>
@@ -61,13 +61,24 @@ namespace MinecraftChunkBackup {
 
         /// <summary>Removes the selected world and all its backed up regions.</summary>
         void RemoveWorldButton(object sender, RoutedEventArgs e) {
-            while (worldList.SelectedItems.Count != 0)
-                worlds.Remove((World)worldList.SelectedItems[0]);
+            while (worldList.SelectedItems.Count != 0) {
+                World targetWorld = (World)worldList.SelectedItems[0];
+                worlds.Remove(targetWorld);
+                for (int i = 0, end = regions.Count; i < end; ++i) {
+                    if (regions[i].World == targetWorld) {
+                        regions.RemoveAt(i);
+                        --i;
+                        --end;
+                    }
+                }
+            }
         }
 
         /// <summary>Checks if a position is already in the list of regions.</summary>
-        bool HasRegion(int x, int z) {
+        bool HasRegion(World world, int x, int z) {
             for (int i = 0, end = regions.Count; i < end; ++i) {
+                if (regions[i].World != world)
+                    continue;
                 Position pos = regions[i].Region.Pos;
                 if (pos.X < x)
                     continue;
@@ -107,7 +118,7 @@ namespace MinecraftChunkBackup {
                     x != xEnd + xDir; x += xDir)
                     for (int z = adder.regionStartZ.Value, zEnd = adder.regionEndZ.Value, zDir = Math.Sign(zEnd - z + .01);
                         z != zEnd + zDir; z += zDir)
-                        if (!HasRegion(x, z))
+                        if (!HasRegion(world, x, z))
                             AddSortedRegion(world, x, z);
         }
 

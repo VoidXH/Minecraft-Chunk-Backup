@@ -16,7 +16,7 @@ namespace Controls {
             set => Text = value.ToString();
             get {
                 if (Valid)
-                    return int.Parse(Text);
+                    return int.Parse(Dispatcher.Invoke(() => Text));
                 else
                     return 0;
             }
