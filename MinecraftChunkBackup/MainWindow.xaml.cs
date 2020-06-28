@@ -35,7 +35,7 @@ namespace MinecraftChunkBackup {
             if (worlds.Count != 0)
                 worldList.SelectedItem = worlds[worlds.Count - 1];
             regionList.ItemsSource = regions;
-            backup = new BackupTask(regions, picker, hours, minutes);
+            backup = new BackupTask(regions, picker, hours, minutes, changes, nextBackup);
         }
 
         /// <summary>Browse the PC for a Minecraft world.</summary>
