@@ -33,7 +33,7 @@
         <Label Content="minute(s)." Grid.Column="2" HorizontalAlignment="Left" Margin="130,36,0,0" VerticalAlignment="Top"/>
         <Label Content="Backup the last" Grid.Column="2" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Padding="0,5,5,5"/>
         <local:NumericTextBox x:Name="changes" Grid.Column="2" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="23"
-                              Margin="95,68,0,0" Text="0" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="25"/>
+                              Margin="95,68,0,0" Text="5" VerticalAlignment="Top" VerticalContentAlignment="Center" Width="25"/>
         <Label Content="changes." Grid.Column="2" HorizontalAlignment="Left" Margin="120,67,0,0" VerticalAlignment="Top"/>
         <Label x:Name="nextBackup" Content="Next backup in --:--:--" Grid.Column="2" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Padding="0,5,5,5"/>
         <Label Content="Export path:" Grid.Column="2" HorizontalAlignment="Left" Margin="10,141,0,0" VerticalAlignment="Top" Padding="0,5,5,5"/>

@@ -34,17 +34,25 @@ namespace MinecraftChunkBackup {
                 string path = targetPath.SelectedPath;
                 if (string.IsNullOrEmpty(path))
                     continue;
-                for (int i = 0, end = regions.Count; i < end; ++i) {
-                    string regionFile = regions[i].Region.ToString(),
-                        source = Path.Combine(regions[i].World.Path, regionFolder, regionFile);
+                for (int region = 0, end = regions.Count; region < end; ++region) {
+                    string source = Path.Combine(regions[region].World.Path, regionFolder, regions[region].Region.ToString());
                     if (File.Exists(source)) {
-                        string outputFolder = Path.Combine(targetPath.SelectedPath, regions[i].World.Name);
-                        string target = Path.Combine(outputFolder, regionFile);
-                        if (File.Exists(target) && File.GetLastWriteTime(source) == File.GetLastWriteTime(target))
-                            continue;
-                        Directory.CreateDirectory(outputFolder);
-                        // TODO: change count and proper handling (target exists, increase)
-                        File.Copy(source, target, true);
+                        string outputFolder = Path.Combine(targetPath.SelectedPath, regions[region].World.Name);
+                        string target = Path.Combine(outputFolder, regions[region].Region.ToString(0));
+                        if (File.Exists(target)) {
+                            if (File.GetLastWriteTime(source) == File.GetLastWriteTime(target))
+                                continue;
+                            // TODO: remove versions > changes
+                            for (int change = changes.Value - 2; change > 0;) {
+                                string newTarget = Path.Combine(outputFolder, regions[region].Region.ToString(--change));
+                                if (!File.Exists(newTarget)) // TODO: fill positions, handle the last properly
+                                    continue;
+                                // TODO: change count and proper handling (target exists, increase)
+                            }
+                        } else {
+                            Directory.CreateDirectory(outputFolder);
+                            File.Copy(source, target, true);
+                        }
                     }
                 }
                 lastUpdate = DateTime.Now;

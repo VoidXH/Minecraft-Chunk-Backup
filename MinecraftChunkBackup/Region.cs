@@ -45,5 +45,7 @@ namespace MinecraftChunkBackup {
         }
 
         public override string ToString() => string.Format("r.{0}.{1}.mca", Pos.X, Pos.Z);
+
+        public string ToString(int version) => string.Format("r.{0}.{1}.{2}.mca", Pos.X, Pos.Z, version);
     }
 }

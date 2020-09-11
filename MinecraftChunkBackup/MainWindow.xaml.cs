@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using MessageBox = System.Windows.MessageBox;
 
 namespace MinecraftChunkBackup {
-    public partial class MainWindow : Window {
+    public partial class MainWindow : Window { // TODO: restore feature
         const string regionsFile = "regions.bin";
 
         readonly BackupTask backup;
