@@ -42,13 +42,16 @@ namespace MinecraftChunkBackup {
                         if (File.Exists(target)) {
                             if (File.GetLastWriteTime(source) == File.GetLastWriteTime(target))
                                 continue;
-                            // TODO: remove versions > changes
-                            for (int change = changes.Value - 2; change > 0;) {
+                            string last = Path.Combine(outputFolder, regions[region].Region.ToString(changes.Value - 1));
+                            if (File.Exists(last))
+                                File.Delete(last);
+                            for (int change = changes.Value - 1; change > 0;) {
                                 string newTarget = Path.Combine(outputFolder, regions[region].Region.ToString(--change));
-                                if (!File.Exists(newTarget)) // TODO: fill positions, handle the last properly
+                                if (!File.Exists(newTarget))
                                     continue;
-                                // TODO: change count and proper handling (target exists, increase)
+                                File.Move(newTarget, Path.Combine(outputFolder, regions[region].Region.ToString(change + 1)));
                             }
+                            File.Copy(source, target, true);
                         } else {
                             Directory.CreateDirectory(outputFolder);
                             File.Copy(source, target, true);
