@@ -37,23 +37,22 @@ namespace MinecraftChunkBackup {
                 for (int region = 0, end = regions.Count; region < end; ++region) {
                     string source = Path.Combine(regions[region].World.Path, regionFolder, regions[region].Region.ToString());
                     if (File.Exists(source)) {
-                        string outputFolder = Path.Combine(targetPath.SelectedPath, regions[region].World.Name);
-                        string target = Path.Combine(outputFolder, regions[region].Region.ToString(0));
+                        string target = regions[region].BackupPath(path, 0);
                         if (File.Exists(target)) {
                             if (File.GetLastWriteTime(source) == File.GetLastWriteTime(target))
                                 continue;
-                            string last = Path.Combine(outputFolder, regions[region].Region.ToString(changes.Value - 1));
+                            string last = regions[region].BackupPath(path, changes.Value - 1);
                             if (File.Exists(last))
                                 File.Delete(last);
                             for (int change = changes.Value - 1; change > 0;) {
-                                string newTarget = Path.Combine(outputFolder, regions[region].Region.ToString(--change));
+                                string newTarget = regions[region].BackupPath(path, --change);
                                 if (!File.Exists(newTarget))
                                     continue;
-                                File.Move(newTarget, Path.Combine(outputFolder, regions[region].Region.ToString(change + 1)));
+                                File.Move(newTarget, regions[region].BackupPath(path, change + 1));
                             }
                             File.Copy(source, target, true);
                         } else {
-                            Directory.CreateDirectory(outputFolder);
+                            Directory.CreateDirectory(Path.Combine(targetPath.SelectedPath, regions[region].World.Name));
                             File.Copy(source, target, true);
                         }
                     }

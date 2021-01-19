@@ -1,4 +1,6 @@
-﻿namespace MinecraftChunkBackup {
+﻿using System.IO;
+
+namespace MinecraftChunkBackup {
     public class RegionEntry {
         public World World { get; }
         public Region Region { get; }
@@ -11,5 +13,7 @@
             Chunk = new RegionToChunk(region);
             WorldPos = new RegionToWorldPos(region);
         }
+
+        public string BackupPath(string parent, int version) => Path.Combine(parent, World.Name, Region.ToString(version));
     }
 }
