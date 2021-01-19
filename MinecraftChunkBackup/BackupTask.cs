@@ -9,8 +9,6 @@ using Label = System.Windows.Controls.Label;
 
 namespace MinecraftChunkBackup {
     public class BackupTask : IDisposable {
-        const string regionFolder = "region";
-
         readonly Collection<RegionEntry> regions;
         readonly FolderPicker targetPath;
         readonly NumericTextBox hours, minutes, changes;
@@ -35,11 +33,10 @@ namespace MinecraftChunkBackup {
                 if (string.IsNullOrEmpty(path))
                     continue;
                 for (int region = 0, end = regions.Count; region < end; ++region) {
-                    string source = Path.Combine(regions[region].World.Path, regionFolder, regions[region].Region.ToString());
-                    if (File.Exists(source)) {
+                    if (File.Exists(regions[region].OriginalPath)) {
                         string target = regions[region].BackupPath(path, 0);
                         if (File.Exists(target)) {
-                            if (File.GetLastWriteTime(source) == File.GetLastWriteTime(target))
+                            if (File.GetLastWriteTime(regions[region].OriginalPath) == File.GetLastWriteTime(target))
                                 continue;
                             string last = regions[region].BackupPath(path, changes.Value - 1);
                             if (File.Exists(last))
@@ -50,10 +47,10 @@ namespace MinecraftChunkBackup {
                                     continue;
                                 File.Move(newTarget, regions[region].BackupPath(path, change + 1));
                             }
-                            File.Copy(source, target, true);
+                            File.Copy(regions[region].OriginalPath, target, true);
                         } else {
                             Directory.CreateDirectory(Path.Combine(targetPath.SelectedPath, regions[region].World.Name));
-                            File.Copy(source, target, true);
+                            File.Copy(regions[region].OriginalPath, target, true);
                         }
                     }
                 }

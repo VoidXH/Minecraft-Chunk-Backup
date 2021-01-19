@@ -2,6 +2,8 @@
 
 namespace MinecraftChunkBackup {
     public class RegionEntry {
+        const string regionFolder = "region";
+
         public World World { get; }
         public Region Region { get; }
         public RegionToChunk Chunk { get; }
@@ -13,6 +15,15 @@ namespace MinecraftChunkBackup {
             Chunk = new RegionToChunk(region);
             WorldPos = new RegionToWorldPos(region);
         }
+
+        public string OriginalPath {
+            get {
+                if (originalPath != null)
+                    return originalPath;
+                return originalPath = Path.Combine(World.Path, regionFolder, Region.ToString());
+            }
+        }
+        string originalPath = null;
 
         public string BackupPath(string parent, int version) => Path.Combine(parent, World.Name, Region.ToString(version));
     }
