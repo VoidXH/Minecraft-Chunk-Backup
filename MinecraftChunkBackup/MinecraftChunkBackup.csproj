@@ -68,6 +68,9 @@
     <Compile Include="RegionEntry.cs" />
     <Compile Include="RegionToChunk.cs" />
     <Compile Include="RegionToWorldPos.cs" />
+    <Compile Include="Restore.xaml.cs">
+      <DependentUpon>Restore.xaml</DependentUpon>
+    </Compile>
     <Compile Include="World.cs" />
     <Page Include="AddRegions.xaml">
       <SubType>Designer</SubType>
@@ -85,6 +88,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Restore.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

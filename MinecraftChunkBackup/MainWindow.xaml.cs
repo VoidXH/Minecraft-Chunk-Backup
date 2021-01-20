@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using MessageBox = System.Windows.MessageBox;
 
 namespace MinecraftChunkBackup {
-    public partial class MainWindow : Window { // TODO: restore feature
+    public partial class MainWindow : Window {
         const string regionsFile = "regions.bin";
 
         readonly BackupTask backup;
@@ -40,7 +40,8 @@ namespace MinecraftChunkBackup {
 
         /// <summary>Browse the PC for a Minecraft world.</summary>
         void AddWorldButton(object sender, RoutedEventArgs e) {
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), mcPath = Path.Combine(path, ".minecraft", "saves");
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                mcPath = Path.Combine(path, ".minecraft", "saves");
             if (Directory.Exists(mcPath))
                 path = mcPath;
             FolderBrowserDialog opener = new FolderBrowserDialog {
@@ -105,10 +106,11 @@ namespace MinecraftChunkBackup {
                 regions.Move(end, pos);
         }
 
-        /// <summary>Show an <see cref="AddRegions"/> dialog and add the results that are not already on the <see cref="regions"/> list.</summary>
+        /// <summary>Show an <see cref="AddRegions"/> dialog and add the results that are not already on the <see cref="regions"/> list.
+        /// </summary>
         void AddRegionsButton(object sender, RoutedEventArgs e) {
             if (worldList.SelectedItems.Count != 1) {
-                MessageBox.Show("Please select one world.", "World selection", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Please select only one world.", "World selection", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             World world = (World)worldList.SelectedItems[0];
@@ -120,6 +122,15 @@ namespace MinecraftChunkBackup {
                         z != zEnd + zDir; z += zDir)
                         if (!HasRegion(world, x, z))
                             AddSortedRegion(world, x, z);
+        }
+
+        void RestoreRegionButton(object sender, RoutedEventArgs e) {
+            if (worldList.SelectedItems.Count != 1) {
+                MessageBox.Show("Please select only one region.", "Region selection", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            Restore dialog = new Restore((RegionEntry)regionList.SelectedItems[0], picker.SelectedPath, changes.Value);
+            dialog.Show();
         }
 
         /// <summary>Removes the selected <see cref="regions"/>.</summary>

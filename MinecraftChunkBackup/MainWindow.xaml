@@ -22,6 +22,8 @@
         </GroupBox>
         <Button Grid.Column="1" Content="Add regions" Margin="10,0,0,10" HorizontalAlignment="Left" Width="100" Height="20" VerticalAlignment="Bottom"
                 Click="AddRegionsButton"/>
+        <Button Grid.Column="1" Content="Restore region" Margin="115,0,0,10" HorizontalAlignment="Left" Width="100" Height="20" VerticalAlignment="Bottom"
+                Click="RestoreRegionButton"/>
         <Button Grid.Column="1" Content="Remove regions" Margin="0,0,0,10" HorizontalAlignment="Right" Width="100" Height="20" VerticalAlignment="Bottom"
                 Click="RemoveRegionsButton"/>
         <Label Content="Back up every" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Padding="0,5,5,5"/>
