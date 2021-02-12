@@ -40,5 +40,6 @@
         <Label x:Name="nextBackup" Content="Next backup in --:--:--" Grid.Column="2" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Padding="0,5,5,5"/>
         <Label Content="Export path:" Grid.Column="2" HorizontalAlignment="Left" Margin="10,141,0,0" VerticalAlignment="Top" Padding="0,5,5,5"/>
         <local:FolderPicker x:Name="picker" Grid.Column="2" HorizontalAlignment="Left" Height="22" Margin="10,167,0,0" VerticalAlignment="Top" Width="200"/>
+        <Button Content="by VoidX" Grid.Column="2" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Click="Ad"/>
     </Grid>
 </Window>

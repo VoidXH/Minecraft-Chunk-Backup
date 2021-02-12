@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
@@ -157,5 +158,7 @@ namespace MinecraftChunkBackup {
                     writer.Write(string.Empty);
             }
         }
+
+        private void Ad(object sender, RoutedEventArgs e) => Process.Start("http://en.sbence.hu/");
     }
 }

@@ -9,7 +9,7 @@
     <Grid>
         <Label Content="Version:" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top"/>
         <ComboBox x:Name="version" Margin="67,10,90,0" VerticalAlignment="Top"/>
-        <Button Content="OK" Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="OK"/>
-        <Button Content="Cancel" Margin="0,35,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="Button_Click"/>
+        <Button x:Name="ok" Content="OK" Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="OK"/>
+        <Button Content="Cancel" Margin="0,35,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="Cancel"/>
     </Grid>
 </Window>
